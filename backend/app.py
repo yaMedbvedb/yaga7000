@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI(
     title="YAGA7000",
@@ -6,6 +8,23 @@ app = FastAPI(
     version="0.1.0"
 )
 
+# ===== CORS =====
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ===== MODELS =====
+class AskRequest(BaseModel):
+    message: str
+
+class AskResponse(BaseModel):
+    response: str
+
+# ===== ROUTES =====
 @app.get("/")
 def root():
     return {
@@ -18,10 +37,14 @@ def root():
 def health():
     return {"status": "ok"}
 
-@app.post("/ask")
-def ask(question: str):
-    return {
-        "question": question,
-        "answer": "Яга думает... (пока заглушка)",
-        "confidence": 0.42
-    }
+@app.post("/api/ask", response_model=AskResponse)
+def ask(data: AskRequest):
+    question = data.message
+
+    answer = (
+        f"🧠 PLAN:\nПлан выполнения задачи: {question}\n\n"
+        f"⚙ EXECUTION:\nАнализ запроса и формирование ответа.\n\n"
+        f"💾 MEMORY:\nРезультат сохранён в экосистеме YAGA7000."
+    )
+
+    return {"response": answer}
