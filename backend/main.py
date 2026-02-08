@@ -1,8 +1,10 @@
 ﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI()
 
+# CORS — разрешаем фронту ВСЁ
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -11,12 +13,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class AskRequest(BaseModel):
+    question: str
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 @app.post("/ask")
-def ask(question: str):
+def ask(req: AskRequest):
     return {
-        "answer": "Yaga heard the question: " + question
+        "answer": f"Yaga heard the question: {req.question}"
     }
