@@ -2,12 +2,11 @@
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI(title="YAGA7000")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -25,6 +24,4 @@ def health():
 
 @app.post("/api/ask")
 def ask(req: AskRequest):
-    return {
-        "response": f"🧙‍♀️ Яга отвечает: {req.message}"
-    }
+    return {"response": f"🧙‍♀️ Яга отвечает: {req.message}"}
