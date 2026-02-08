@@ -27,7 +27,7 @@ def ask(req: AskRequest):
     return {
         "response": (
             f"🧠 PLAN:\nлан: {req.message}\n\n"
-            f"⚙ EXECUTION:\nнализ и рассуждение.\n\n"
+            f"⚙ EXECUTION:\nнализ запроса.\n\n"
             f"💾 MEMORY:\nСохранено в экосистеме YAGA7000."
         )
     }
