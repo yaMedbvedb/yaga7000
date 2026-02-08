@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>YAGA7000</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>YAGA7000</title>
+    <script src="script.js" defer></script>
 </head>
 <body>
 
-  <h1>рџ§™вЂЌв™ЂпёЏ Р‘Р°Р±СѓС€РєР° РЇРіР° вЂ” YAGA7000</h1>
+<h1>???+? YAGA7000</h1>
 
-  <textarea id="userInput" placeholder="РЎРїСЂРѕСЃРё РЇРіСѓ..."></textarea>
-  <br />
-  <button onclick="askYaga()">РЎРїСЂРѕСЃРёС‚СЊ</button>
+<input
+    type="text"
+    id="questionInput"
+    placeholder="адай вопрос абушке Яге"
+    style="width: 300px;"
+/>
 
-  <pre id="response"></pre>
+<button onclick="askYaga()">Спросить</button>
 
-  <script src="script.js"></script>
+<pre id="answer"></pre>
+
 </body>
 </html>

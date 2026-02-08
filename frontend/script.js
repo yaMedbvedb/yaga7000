@@ -1,30 +1,35 @@
-const API_URL = "https://yaga7000-backend.onrender.com/api/ask";
-console.log("ðŸŸ¢ YAGA7000 script loaded");
-
 async function askYaga() {
-  const input = document.getElementById("input");
-  const output = document.getElementById("output");
+    const input = document.getElementById("questionInput");
+    const output = document.getElementById("answer");
 
-  const message = input.value.trim();
-  if (!message) return;
+    if (!input) {
+        console.error("questionInput not found");
+        return;
+    }
 
-  output.innerText = "ðŸ§™â€â™€ï¸ Ð¯Ð³Ð° Ð´ÑƒÐ¼Ð°ÐµÑ‚...";
+    if (!input.value.trim()) {
+        output.textContent = "???+? âåäè âîïðîñ";
+        return;
+    }
 
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message })
-    });
+    output.textContent = "???+? ßãà äóìàåò...";
 
-    const data = await response.json();
-    console.log("JSON DATA:", data);
+    try {
+        const response = await fetch(
+            "https://yaga7000-backend.onrender.com/ask?question=" +
+            encodeURIComponent(input.value),
+            { method: "POST" }
+        );
 
-    output.innerText = data.response || "âš ï¸ Ð¯Ð³Ð° Ð¼Ð¾Ð»Ñ‡Ð¸Ñ‚";
-  } catch (err) {
-    console.error(err);
-    output.innerText = "ðŸ”¥ ÐžÑˆÐ¸Ð±ÐºÐ° ÑÐ²ÑÐ·Ð¸ Ñ Ð¯Ð³Ð¾Ð¹";
-  }
+        const data = await response.json();
+        output.textContent = data.answer ?? "?? åò îòâåòà";
+
+    } catch (err) {
+        console.error(err);
+        output.textContent = "? øèáêà ñâÿçè ñ ñåðâåðîì";
+    }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("YAGA frontend ready");
+});
