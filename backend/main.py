@@ -19,8 +19,8 @@ def health():
     return {"status": "ok"}
 
 @app.post("/api/ask")
-def ask(payload: dict):
-    message = payload.get("message", "")
+def ask(data: dict):
+    message = data.get("message", "")
     return {
         "response": f"🧙‍♀️ Яга услышала: {message}"
     }

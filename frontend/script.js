@@ -1,7 +1,6 @@
 const API_URL = "https://yaga7000-backend.onrender.com/api/ask";
 console.log("🟢 YAGA7000 script loaded");
 
-
 async function askYaga() {
   const input = document.getElementById("input");
   const output = document.getElementById("output");
@@ -12,7 +11,7 @@ async function askYaga() {
   output.innerText = "🧙‍♀️ Яга думает...";
 
   try {
-    const response = await fetch("https://yaga7000-backend.onrender.com/api/ask", {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -20,19 +19,12 @@ async function askYaga() {
       body: JSON.stringify({ message })
     });
 
-    console.log("RAW RESPONSE:", response);
-
     const data = await response.json();
     console.log("JSON DATA:", data);
 
-    if (data && data.response) {
-      output.innerText = data.response;
-    } else {
-      output.innerText = "⚠️ Ответ получен, но поле response пустое";
-    }
-
+    output.innerText = data.response || "⚠️ Яга молчит";
   } catch (err) {
-    console.error("FETCH ERROR:", err);
+    console.error(err);
     output.innerText = "🔥 Ошибка связи с Ягой";
   }
 }
