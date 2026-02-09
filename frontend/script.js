@@ -10,7 +10,7 @@
   output.textContent = "Yaga думает...";
 
   try {
-    const res = await fetch("https://yaga7000-backend.onrender.com/ask", {
+    const res = await fetch("/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -28,7 +28,7 @@
     output.textContent = data.answer;
   } catch (e) {
     console.error(e);
-    output.textContent = "шибка связи с сервером";
+    output.textContent = "шибка связи с Ягой";
   }
 }
 
