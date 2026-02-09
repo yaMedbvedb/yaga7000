@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# CORS — разрешаем фронту ВСЁ
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

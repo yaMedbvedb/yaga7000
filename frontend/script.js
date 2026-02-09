@@ -1,35 +1,30 @@
-async function askYaga() {
-    const input = document.getElementById("questionInput");
-    const output = document.getElementById("answer");
+ï»¿async function askYaga() {
+  const input = document.getElementById("questionInput");
+  const output = document.getElementById("answer");
 
-    if (!input) {
-        console.error("questionInput not found");
-        return;
-    }
+  const text = input.value.trim();
+  if (!text) {
+    output.textContent = "Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð²Ð¾Ð¿Ñ€Ð¾Ñ";
+    return;
+  }
 
-    if (!input.value.trim()) {
-        output.textContent = "???+? âåäè âîïðîñ";
-        return;
-    }
+  output.textContent = "Yaga Ð´ÑƒÐ¼Ð°ÐµÑ‚...";
 
-    output.textContent = "???+? ßãà äóìàåò...";
+  try {
+    const res = await fetch("https://yaga7000-backend.onrender.com/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question: text })
+    });
 
-    try {
-        const response = await fetch(
-            "https://yaga7000-backend.onrender.com/ask?question=" +
-            encodeURIComponent(input.value),
-            { method: "POST" }
-        );
-
-        const data = await response.json();
-        output.textContent = data.answer ?? "?? åò îòâåòà";
-
-    } catch (err) {
-        console.error(err);
-        output.textContent = "? øèáêà ñâÿçè ñ ñåðâåðîì";
-    }
+    const data = await res.json();
+    output.textContent = data.answer;
+  } catch (e) {
+    console.error(e);
+    output.textContent = "ÑˆÐ¸Ð±ÐºÐ° ÑÐ²ÑÐ·Ð¸ Ñ Ð¯Ð³Ð¾Ð¹";
+  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("YAGA frontend ready");
-});
+console.log("YAGA frontend ready");
