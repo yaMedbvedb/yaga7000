@@ -1,4 +1,6 @@
-﻿async function askYaga() {
+﻿async function askYaga(event) {
+  if (event) event.preventDefault();
+
   const input = document.getElementById("questionInput");
   const output = document.getElementById("answer");
 
