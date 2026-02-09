@@ -1,26 +1,26 @@
 ﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
-app = FastAPI(title="YAGA7000")
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.get("/")
-def root():
-    return {"status": "YAGA7000 online"}
+class AskRequest(BaseModel):
+    question: str
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
-@app.post("/api/ask")
-def ask(data: dict):
-    message = data.get("message", "")
+@app.post("/ask")
+def ask(req: AskRequest):
     return {
-        "response": f"🧙‍♀️ Яга услышала: {message}"
+        "answer": f"Yaga heard the question: {req.question}"
     }
