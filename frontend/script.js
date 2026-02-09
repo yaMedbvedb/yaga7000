@@ -1,6 +1,6 @@
-﻿async function askYaga(event) {
-  if (event) event.preventDefault();
+﻿document.getElementById("askBtn").addEventListener("click", askYaga);
 
+async function askYaga() {
   const input = document.getElementById("questionInput");
   const output = document.getElementById("answer");
 
@@ -15,9 +15,7 @@
   try {
     const res = await fetch("https://yaga7000-backend.onrender.com/ask", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question: text })
     });
 
