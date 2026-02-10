@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI
+﻿from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -12,15 +12,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class AskRequest(BaseModel):
+class Question(BaseModel):
     question: str
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
+@app.head("/ask")
+def ask_head():
+    return Response(status_code=200)
+
 @app.post("/ask")
-def ask(req: AskRequest):
-    return {
-        "answer": f"Yaga heard the question: {req.question}"
-    }
+def ask(q: Question):
+    return {"answer": f"Yaga heard the question: {q.question}"}
