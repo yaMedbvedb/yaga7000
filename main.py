@@ -1,12 +1,6 @@
-﻿from fastapi import FastAPI, Response
+﻿from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-
-def fix_encoding(text: str) -> str:
-    try:
-        return text.encode("latin1").decode("utf-8")
-    except Exception:
-        return text
+import json
 
 app = FastAPI()
 
@@ -18,9 +12,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Question(BaseModel):
-    question: str
-
 @app.get("/health")
 def health():
     return {"status": "ok"}
@@ -30,6 +21,16 @@ def ask_head():
     return Response(status_code=200)
 
 @app.post("/ask")
-def ask(q: Question):
-    fixed = fix_encoding(q.question)
-    return {"answer": f"Yaga heard the question: {fixed}"}
+async def ask(request: Request):
+    raw = await request.body()
+
+    #   Т
+    try:
+        text = raw.decode("utf-16-le")
+    except UnicodeDecodeError:
+        text = raw.decode("utf-8")
+
+    data = json.loads(text)
+    question = data.get("question", "")
+
+    return {"answer": f"Yaga heard the question: {question}"}
