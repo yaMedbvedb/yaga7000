@@ -2,6 +2,12 @@
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+def fix_encoding(text: str) -> str:
+    try:
+        return text.encode("latin1").decode("utf-8")
+    except Exception:
+        return text
+
 app = FastAPI()
 
 app.add_middleware(
@@ -25,4 +31,5 @@ def ask_head():
 
 @app.post("/ask")
 def ask(q: Question):
-    return {"answer": f"Yaga heard the question: {q.question}"}
+    fixed = fix_encoding(q.question)
+    return {"answer": f"Yaga heard the question: {fixed}"}
