@@ -3,6 +3,12 @@ import base64
 
 app = FastAPI()
 
+def fix_mojibake(text: str) -> str:
+    try:
+        return text.encode("latin1").decode("utf-8")
+    except Exception:
+        return text
+
 @app.post("/ask")
 async def ask(request: Request):
     data = await request.json()
@@ -16,8 +22,9 @@ async def ask(request: Request):
         except Exception:
             question = "[decode error]"
 
+    if question:
+        question = fix_mojibake(question)
+
     return {
-        "answer": "### YAGA BACKEND UPDATED ###",
-        "debug_question": question,
-        "debug_b64": question_b64,
+        "answer": f"Yaga heard the question: {question}"
     }
