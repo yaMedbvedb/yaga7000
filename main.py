@@ -4,10 +4,10 @@ import base64
 
 app = FastAPI()
 
+# ✅ равильный CORS без credentials
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
