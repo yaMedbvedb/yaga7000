@@ -1,7 +1,16 @@
 ﻿from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 import base64
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/ask")
 async def ask(request: Request):
@@ -15,5 +24,5 @@ async def ask(request: Request):
         question = data["question"]
 
     return {
-        "answer": f"Yaga heard the question: {question}"
+        "answer": f"Яга услышала: {question}"
     }
