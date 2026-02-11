@@ -16,4 +16,8 @@ async def ask(request: Request):
         except Exception:
             question = "[decode error]"
 
-    return {"answer": f"Yaga heard the question: {question}"}
+    return {
+        "answer": "### YAGA BACKEND UPDATED ###",
+        "debug_question": question,
+        "debug_b64": question_b64,
+    }
