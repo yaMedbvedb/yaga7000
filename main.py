@@ -1,10 +1,10 @@
 ﻿from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-import base64
+from openai import OpenAI
+import os
 
 app = FastAPI()
 
-# ✅ равильный CORS без credentials
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,17 +12,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 @app.post("/ask")
 async def ask(request: Request):
     data = await request.json()
+    question = data.get("question", "")
 
-    question = None
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "Ты аба Яга из русских сказок. твечай мистически, немного пугающе, но мудро."
+            },
+            {
+                "role": "user",
+                "content": question
+            }
+        ]
+    )
 
-    if "question_b64" in data:
-        question = base64.b64decode(data["question_b64"]).decode("utf-8")
-    elif "question" in data:
-        question = data["question"]
+    answer = response.choices[0].message.content
 
-    return {
-        "answer": f"Яга услышала: {question}"
-    }
+    return {"answer": answer}

@@ -1,35 +1,38 @@
-﻿async function askYaga() {
+﻿document.addEventListener("DOMContentLoaded", () => {
+  console.log("YAGA7000 script loaded");
+
   const input = document.getElementById("questionInput");
+  const button = document.getElementById("askBtn");
   const output = document.getElementById("answer");
 
-  if (!input || !input.value.trim()) {
-    output.textContent = "ведите вопрос";
+  if (!input || !button || !output) {
+    console.error("DOM elements missing");
     return;
   }
 
-  output.textContent = "Yaga думает...";
-
-  try {
-    const res = await fetch("/ask", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        question: input.value.trim()
-      })
-    });
-
-    if (!res.ok) {
-      throw new Error("HTTP " + res.status);
+  button.addEventListener("click", async () => {
+    const text = input.value.trim();
+    if (!text) {
+      output.textContent = "ведите вопрос";
+      return;
     }
 
-    const data = await res.json();
-    output.textContent = data.answer;
-  } catch (e) {
-    console.error(e);
-    output.textContent = "шибка связи с Ягой";
-  }
-}
+    output.textContent = "Yaga думает...";
 
-console.log("YAGA frontend ready");
+    try {
+      const res = await fetch("https://yaga7000-backend.onrender.com/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question: text })
+      });
+
+      const data = await res.json();
+      output.textContent = data.answer;
+    } catch (e) {
+      console.error(e);
+      output.textContent = "шибка связи с Ягой";
+    }
+  });
+});
