@@ -12,7 +12,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("yaga7000"))
 
 @app.post("/ask")
 async def ask(request: Request):
